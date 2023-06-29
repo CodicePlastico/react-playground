@@ -2,25 +2,34 @@ import React, {useState} from 'react'
 import axios from 'axios'
 
 const HomePage = () => {
-  const [countries, setCountries] = useState([])
+
+  const [user, setUser] = useState({username: '', password: ''})
+
+  const handleChangeUser = (evt) => {
+    setUser({...user, [evt.target.name]: evt.target.value})
+  }
 
 
-  const getCountries = () => {
-    axios.get('https://restcountries.com/v3.1/all?fields=name,flags')
-    .then((response) => {
-      setCountries(response.data)
-    })
+  const submit = () => {
+
+    if (user.password.length < 8) {
+      alert('password troppo corta')
+      return
+    }
+
+    console.log('submit', user)
+    // get username e pwd
+    // post verso API
   }
 
   return (
     <div>
-      <button onClick={getCountries}>Get Countries</button>
+      <input type="text" name="username" defaultValue={user.username} onChange={handleChangeUser} />
+      <input type="text" name="password" defaultValue={user.password} onChange={handleChangeUser} />
 
-      <ul>
-      {countries.map(c => {
-        return (<li key={c.name.common} ><img src={c.flags.png}/>{c.name.common}</li>)
-      })}
-      </ul>
+
+      <button onClick={submit}>Login</button>
+
 
     </div>
     )
