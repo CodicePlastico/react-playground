@@ -1,22 +1,27 @@
 import React, {useState} from 'react'
-
+import axios from 'axios'
 
 const HomePage = () => {
-  const [counter, setCounter] = useState(0)
+  const [countries, setCountries] = useState([])
 
-  const handlePlusClick = () => {
-    setCounter(counter + 1)
+
+  const getCountries = () => {
+    axios.get('https://restcountries.com/v3.1/all?fields=name,flags')
+    .then((response) => {
+      setCountries(response.data)
+    })
   }
 
   return (
     <div>
-      <div>
-        <h3>{counter}</h3>
-      </div>
-      <div>
-        <button>-</button>
-        <button onClick={handlePlusClick}>+</button>
-      </div>
+      <button onClick={getCountries}>Get Countries</button>
+
+      <ul>
+      {countries.map(c => {
+        return (<li key={c.name.common} ><img src={c.flags.png}/>{c.name.common}</li>)
+      })}
+      </ul>
+
     </div>
     )
 }
